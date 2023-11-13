@@ -1,5 +1,6 @@
-package christmas.common;
+package christmas.IO;
 
+import christmas.exceptions.NonPureNumberException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

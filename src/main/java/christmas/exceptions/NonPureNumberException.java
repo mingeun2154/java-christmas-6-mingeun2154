@@ -1,4 +1,4 @@
-package christmas.common;
+package christmas.exceptions;
 
 public class NonPureNumberException extends IllegalArgumentException {
 

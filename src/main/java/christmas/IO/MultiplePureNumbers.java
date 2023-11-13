@@ -1,5 +1,6 @@
-package christmas.common;
+package christmas.IO;
 
+import christmas.exceptions.NonPureNumberException;
 import java.util.ArrayList;
 import java.util.List;
 

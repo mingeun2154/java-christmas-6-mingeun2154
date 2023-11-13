@@ -10,4 +10,10 @@
 |      | m4t06 | 총혜택 금액 계산                                      | | 총혜택 금액?                                                                                                                                                                                             |
 |      | m4t07 | 총혜택 금액에 따른 배지 부여                               | ||
 | ✓    | m4t08 | 식당 방문 예상 날짜는 1이상 31이하의 숫자만 가능 (이외의 경우 예외를 던진다) | | [개발 요청사항](https://github.com/mingeun2154/java-christmas-6-mingeun2154#12%EC%9B%94-%EC%9D%B4%EB%B2%A4%ED%8A%B8-%ED%94%8C%EB%9E%98%EB%84%88-%EA%B0%9C%EB%B0%9C-%EC%9A%94%EC%B2%AD-%EC%82%AC%ED%95%AD) |
-|      | m4t09 | 메뉴 주문 입력 유효성 검사 (유효하지 않은 입력에 대해 예외를 던진다)       | ||
+| ✓    | m4t09 | 메뉴 주문 입력 유효성 검사 (유효하지 않은 상품 입력에 대해 예외를 던진다)    | ||
+|      | m4t10 | 메뉴 주문 입력 유효성 검사 (유효하지 않은 수량 입력에 대해 예외를 던진다)    | ||
+
+## 미션 진행 과정
+
+[1일차](https://mingeun2154.github.io/wooteco/4th-mission-1/)
+[2일차](https://mingeun2154.github.io/wooteco/4th-mission-2/)

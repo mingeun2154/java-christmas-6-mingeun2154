@@ -1,6 +1,6 @@
-package christmas.domain;
+package christmas.domain.order;
 
-import christmas.common.PureNumber;
+import christmas.IO.PureNumber;
 import christmas.exceptions.InValidVisitDateException;
 import java.time.Month;
 import java.time.MonthDay;
