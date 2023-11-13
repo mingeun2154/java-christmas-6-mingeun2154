@@ -1,6 +1,7 @@
 package christmas.IO;
 
 import christmas.exceptions.InvalidOrderInputPattern;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -35,5 +36,17 @@ public class ItemOrderInput {
 
     public Integer getQuantity() {
         return quantity;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        if (obj == null || obj.getClass() != ItemOrderInput.class) {
+            return false;
+        }
+        ItemOrderInput o = (ItemOrderInput) obj;
+        return Objects.equals(o.itemName, itemName);
     }
 }
