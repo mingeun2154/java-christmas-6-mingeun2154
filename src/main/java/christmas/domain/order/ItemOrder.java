@@ -25,6 +25,10 @@ public class ItemOrder {
         return quantity;
     }
 
+    public Category getCategory() {
+        return item.getCategory();
+    }
+
     private static void validateQuantityLowerBound(ItemOrderInput input) throws InvalidQuantityException {
         if (input.getQuantity() < MIN_QUANTITY)
             throw new InvalidQuantityException();

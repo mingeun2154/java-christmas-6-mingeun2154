@@ -52,6 +52,10 @@ public enum MenuItem {
                 .orElseThrow(NoSuchItemExistsException::new);
     }
 
+    public Category getCategory() {
+        return category;
+    }
+
     private MenuItem(Category category, String name, Integer price) {
         this.category = category;
         this.name = name;

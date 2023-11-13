@@ -1,7 +1,10 @@
 package christmas.domain.order;
 
+import static christmas.domain.order.Category.DRINK;
+
 import christmas.IO.ItemOrderInput;
 import christmas.IO.MultipleOrderInput;
+import christmas.exceptions.DrinksOnlyOrderedException;
 import christmas.exceptions.InvalidOrderInputPattern;
 import christmas.exceptions.InvalidQuantityException;
 import java.util.ArrayList;
@@ -17,18 +20,27 @@ public class OrderBasket {
     }
 
     public static OrderBasket of(MultipleOrderInput input)
-            throws InvalidOrderInputPattern, InvalidQuantityException {
+            throws InvalidOrderInputPattern, InvalidQuantityException, DrinksOnlyOrderedException {
         OrderBasket result = new OrderBasket();
         for (ItemOrderInput orderInput : input.getOrders()) {
             result.orderedItems.add(ItemOrder.of(orderInput));
         }
         validateTotalQuantity(result);
+        validateDrinksOnlyOrder(result);
         return result;
     }
 
     private static void validateTotalQuantity(OrderBasket orders) throws InvalidQuantityException {
         if (countTotalItemsQuantity(orders) > MAX_TOTAL_QUANTITY)
             throw new InvalidQuantityException();
+    }
+
+    private static void validateDrinksOnlyOrder(OrderBasket orders) throws DrinksOnlyOrderedException {
+        for (ItemOrder item : orders.orderedItems) {
+            if (item.getCategory() != DRINK)
+                return;
+        }
+        throw new DrinksOnlyOrderedException();
     }
 
     private static int countTotalItemsQuantity(OrderBasket orders) {

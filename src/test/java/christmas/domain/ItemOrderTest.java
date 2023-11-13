@@ -6,11 +6,11 @@ import christmas.IO.ItemOrderInput;
 import christmas.IO.MultipleOrderInput;
 import christmas.domain.order.ItemOrder;
 import christmas.domain.order.OrderBasket;
+import christmas.exceptions.DrinksOnlyOrderedException;
 import christmas.exceptions.InvalidQuantityException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 public class ItemOrderTest {
@@ -51,4 +51,12 @@ public class ItemOrderTest {
         );
     }
 
+    @DisplayName("음료만 주문한 경우 -> 예외 발생")
+    @ParameterizedTest
+    @ValueSource(strings = {"제로콜라-20","제로콜라-1", "제로콜라-1,레드와인-1,샴페인-10"})
+    void youCannotOrderOnlyDrinks(String input) {
+        assertThatThrownBy(
+                () -> OrderBasket.of(MultipleOrderInput.of(input))
+        ).isInstanceOf(DrinksOnlyOrderedException.class);
+    }
 }
