@@ -71,9 +71,8 @@ public class ObjectEqualityStudy {
         // hash 동등성
         HashSet<Bar> set = new HashSet<>();
         set.add(pasta1);
-        set.add(pasta2);
-        set.add(pasta3);
-        assertThat(set.size()).isEqualTo(2);
+        assertThat(set.contains(pasta2)).isTrue();
+        assertThat(set.contains(pasta3)).isFalse();
     }
 
     @DisplayName("모든 필드가 일치해야 동등")
@@ -88,8 +87,7 @@ public class ObjectEqualityStudy {
         // hash 동등성
         HashSet<Foo> set = new HashSet<>();
         set.add(foo1);
-        set.add(foo2);
-        set.add(foo3);
-        assertThat(set.size()).isEqualTo(2);
+        assertThat(set.contains(foo2)).isFalse();
+        assertThat(set.contains(foo3)).isTrue();
     }
 }
