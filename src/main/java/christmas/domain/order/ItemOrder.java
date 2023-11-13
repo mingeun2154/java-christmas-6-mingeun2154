@@ -1,10 +1,12 @@
 package christmas.domain.order;
 
 import christmas.IO.ItemOrderInput;
+import christmas.exceptions.InvalidQuantityException;
 import christmas.exceptions.NoSuchItemExistsException;
 
 public class ItemOrder {
 
+    private static final Integer MIN_QUANTITY = 1;
     private final MenuItem item;
     private final Integer quantity;
 
@@ -13,7 +15,18 @@ public class ItemOrder {
         this.quantity = quantity;
     }
 
-    public static ItemOrder of(ItemOrderInput input) throws NoSuchItemExistsException {
+    public static ItemOrder of(ItemOrderInput input)
+            throws NoSuchItemExistsException, InvalidQuantityException {
+        validateQuantityLowerBound(input);
         return new ItemOrder(MenuItem.of(input.getItemName()), input.getQuantity());
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    private static void validateQuantityLowerBound(ItemOrderInput input) throws InvalidQuantityException {
+        if (input.getQuantity() < MIN_QUANTITY)
+            throw new InvalidQuantityException();
     }
 }

@@ -3,11 +3,15 @@ package christmas.domain;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 import christmas.IO.ItemOrderInput;
+import christmas.IO.MultipleOrderInput;
 import christmas.domain.order.ItemOrder;
+import christmas.domain.order.OrderBasket;
+import christmas.exceptions.InvalidQuantityException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 public class ItemOrderTest {
 
@@ -28,4 +32,23 @@ public class ItemOrderTest {
                 () -> ItemOrder.of(ItemOrderInput.of(input))
         );
     }
+
+    @DisplayName("유효하지 않은 주문 수량 -> 예외 발생")
+    @ParameterizedTest
+    @ValueSource(strings = {"양송이수프-3,타파스-21", "초코케이크-10,아이스크림-10,양송이수프-1", "티본스테이크-0,샴페인-2"})
+    void invalidOrderQuantity(String input) {
+        assertThatThrownBy(
+                () -> OrderBasket.of(MultipleOrderInput.of(input))
+        ).isInstanceOf(InvalidQuantityException.class);
+    }
+
+    @DisplayName("유효한 주문 수량")
+    @ParameterizedTest
+    @ValueSource(strings = {"양송이수프-3,타파스-17", "초코케이크-10,아이스크림-10", "티본스테이크-20"})
+    void validOrderQuantity(String input) {
+        Assertions.assertDoesNotThrow(
+                () -> OrderBasket.of(MultipleOrderInput.of(input))
+        );
+    }
+
 }
