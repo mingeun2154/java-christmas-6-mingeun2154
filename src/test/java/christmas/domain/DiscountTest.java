@@ -49,6 +49,40 @@ public class DiscountTest {
                 .isEqualTo(totalPriceBeforeDiscount - discountAmount);
     }
 
+    @DisplayName("주말 할인만 적용된 금액 계산")
+    @ParameterizedTest
+    @CsvSource(value = {"29 양송이수프-5,해산물파스타-2,초코케이크-5,레드와인-2",
+            "30 양송이수프-5,해산물파스타-2,초코케이크-5,레드와인-2"}, delimiter = ' ')
+    void hitOnlyWeekendDiscount(String day, String orderInputs) {
+        final Integer totalPriceBeforeDiscount = 5 * MUSHROOM_SOUP.getPrice() + 2 * SEAFOOD_PASTA.getPrice()
+                + 5 * CHOCOLATE_CAKE.getPrice() + 2 * RED_WINE.getPrice();
+        final Integer discountAmount = 2 * 2_023;
+        final VisitDate visitDate = VisitDate.of(PureNumber.wrap(day));
+        final OrderBasket orders = OrderBasket.of(MultipleOrderInput.of(orderInputs));
+        assertThat(orders.totalPriceAfterDiscount(visitDate))
+                .isEqualTo(totalPriceBeforeDiscount - discountAmount);
+    }
+
+    @DisplayName("주말 할인 + 크리스마스 디데이 할인이 적용된 금액 계산")
+    @ParameterizedTest
+    @CsvSource(value = {"1 양송이수프-5,해산물파스타-2,초코케이크-5,레드와인-2",
+            "2 양송이수프-5,해산물파스타-2,초코케이크-5,레드와인-2",
+            "8 양송이수프-5,해산물파스타-2,초코케이크-5,레드와인-2",
+            "9 양송이수프-5,해산물파스타-2,초코케이크-5,레드와인-2",
+            "15 양송이수프-5,해산물파스타-2,초코케이크-5,레드와인-2",
+            "16 양송이수프-5,해산물파스타-2,초코케이크-5,레드와인-2",
+            "22 양송이수프-5,해산물파스타-2,초코케이크-5,레드와인-2",
+            "23 양송이수프-5,해산물파스타-2,초코케이크-5,레드와인-2"}, delimiter = ' ')
+    void hitChristmasDDayAndWeekendDiscount(String day, String orderInputs) {
+        final Integer totalPriceBeforeDiscount = 5 * MUSHROOM_SOUP.getPrice() + 2 * SEAFOOD_PASTA.getPrice()
+                + 5 * CHOCOLATE_CAKE.getPrice() + 2 * RED_WINE.getPrice();
+        final Integer discountAmount = 2 * 2_023 + christmasDDayDiscountAmount(day);
+        final VisitDate visitDate = VisitDate.of(PureNumber.wrap(day));
+        final OrderBasket orders = OrderBasket.of(MultipleOrderInput.of(orderInputs));
+        assertThat(orders.totalPriceAfterDiscount(visitDate))
+                .isEqualTo(totalPriceBeforeDiscount - discountAmount);
+    }
+
     int christmasDDayDiscountAmount(String day) {
         Integer d = Integer.parseInt(day);
         if (d >= 1 && d <= 25) {
