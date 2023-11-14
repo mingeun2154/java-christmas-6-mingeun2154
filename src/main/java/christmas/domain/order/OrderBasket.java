@@ -32,11 +32,14 @@ public class OrderBasket {
     }
 
     public int totalPriceBeforeDiscount() {
-        return orderedItems.stream().mapToInt(ItemOrder::getPrice).sum();
+        return orderedItems.stream().mapToInt(ItemOrder::totalPriceBeforeDiscount).sum();
     }
 
     public int totalPriceAfterDiscount(VisitDate visitDate) {
-        return DiscountEvent.discount(totalPriceBeforeDiscount(), visitDate);
+        return DiscountEvent.discount(
+                orderedItems.stream().mapToInt((item) -> DiscountEvent.discount(item, visitDate)).sum()
+                , visitDate
+        );
     }
 
     private static void validateTotalQuantity(OrderBasket orders) throws InvalidQuantityException {

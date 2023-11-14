@@ -25,8 +25,15 @@ public class ItemOrder {
         return quantity;
     }
 
-    public int getPrice() {
+    /**
+     * @return 상품의 한 개당 가격 * 주문 수량
+     */
+    public int totalPriceBeforeDiscount() {
         return quantity * item.getPrice();
+    }
+
+    public int totalPriceAfterDiscount(int discountAmount) {
+        return quantity * (item.getPrice() - discountAmount);
     }
 
     public Category getCategory() {
