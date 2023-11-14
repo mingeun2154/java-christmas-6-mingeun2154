@@ -4,7 +4,7 @@ import static christmas.domain.order.Category.DRINK;
 
 import christmas.IO.ItemOrderInput;
 import christmas.IO.MultipleOrderInput;
-import christmas.domain.discount.DiscountedPrice;
+import christmas.domain.event.DiscountEvent;
 import christmas.exceptions.DrinksOnlyOrderedException;
 import christmas.exceptions.InvalidOrderInputPattern;
 import christmas.exceptions.InvalidQuantityException;
@@ -31,8 +31,12 @@ public class OrderBasket {
         return result;
     }
 
-    public int totalPrice() {
+    public int totalPriceBeforeDiscount() {
         return orderedItems.stream().mapToInt(ItemOrder::getPrice).sum();
+    }
+
+    public int totalPriceAfterDiscount(VisitDate visitDate) {
+        return DiscountEvent.discount(totalPriceBeforeDiscount(), visitDate);
     }
 
     private static void validateTotalQuantity(OrderBasket orders) throws InvalidQuantityException {

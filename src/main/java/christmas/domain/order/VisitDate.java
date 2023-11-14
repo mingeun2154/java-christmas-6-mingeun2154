@@ -34,6 +34,10 @@ public class VisitDate {
         return visitDate.getDayOfMonth();
     }
 
+    public boolean isChristmasDDay() {
+        return visitDate.getDayOfMonth() <= 25 && visitDate.getDayOfMonth() >= 1;
+    }
+
     public boolean isWeekend() {
         return (visitDate.getDayOfWeek() == FRIDAY || visitDate.getDayOfWeek() == SATURDAY);
     }
