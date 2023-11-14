@@ -6,6 +6,7 @@ import static christmas.domain.event.DiscountEvent.WEEKEND_DISCOUNT;
 import christmas.domain.order.Basket;
 import christmas.domain.order.VisitDate;
 import java.util.EnumMap;
+import java.util.Map.Entry;
 
 public class BenefitDetails {
 
@@ -45,6 +46,22 @@ public class BenefitDetails {
 
     public int giftAmount() {
         return gifts.totalPriceBeforeDiscount();
+    }
+
+    public String detailsView() {
+        if (christmasDDayDiscountAmount == 0 && specialDiscountAmount == 0
+                && discountDetails.get(WEEKDAY_DISCOUNT) == 0 && discountDetails.get(WEEKEND_DISCOUNT) == 0) {
+            return "없음";
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.format("크리스마스 디데이 할인: -%,d원\n", christmasDDayDiscountAmount));
+        for (Entry<DiscountEvent, Integer> detail : discountDetails.entrySet()) {
+            sb.append(String.format("%s: -%,d원\n",
+                    detail.getKey().getName(),
+                    detail.getKey().amount() * detail.getValue()));
+        }
+        sb.append(String.format("증정 이벤트: -%,d원\n", gifts.totalPriceBeforeDiscount()));
+        return sb.toString();
     }
 
     private BenefitDetails(Basket orders, VisitDate visitDate) {

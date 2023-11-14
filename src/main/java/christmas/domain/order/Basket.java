@@ -46,19 +46,35 @@ public class Basket {
                 .sum();
     }
 
+    public String itemsView() {
+        if (orderedItems.size() == 0) {
+            return "없음";
+        }
+        StringBuilder sb = new StringBuilder();
+        orderedItems.forEach(item -> {
+            sb.append(item.getItemName())
+                    .append(" ")
+                    .append(item.getQuantity())
+                    .append("개\n");
+        });
+        return sb.toString();
+    }
+
     private Basket() {
         orderedItems = new ArrayList<>();
     }
 
     private static void validateTotalQuantity(Basket orders) throws InvalidQuantityException {
-        if (countTotalItemsQuantity(orders) > MAX_TOTAL_QUANTITY)
+        if (countTotalItemsQuantity(orders) > MAX_TOTAL_QUANTITY) {
             throw new InvalidQuantityException();
+        }
     }
 
     private static void validateDrinksOnlyOrder(Basket orders) throws DrinksOnlyOrderedException {
         for (ItemOrder item : orders.orderedItems) {
-            if (item.getCategory() != DRINK)
+            if (item.getCategory() != DRINK) {
                 return;
+            }
         }
         throw new DrinksOnlyOrderedException();
     }

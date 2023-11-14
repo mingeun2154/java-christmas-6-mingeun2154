@@ -60,6 +60,10 @@ public enum MenuItem {
         return price;
     }
 
+    public String getName() {
+        return name;
+    }
+
     private MenuItem(ItemCategory itemCategory, String name, Integer price) {
         this.itemCategory = itemCategory;
         this.name = name;

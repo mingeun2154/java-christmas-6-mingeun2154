@@ -17,11 +17,12 @@ import java.util.List;
 
 public enum DiscountEvent {
 
-    WEEKDAY_DISCOUNT(2_023, DESSERT, List.of(SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY)),
-    WEEKEND_DISCOUNT(2_023, MAIN, List.of(FRIDAY, SATURDAY));
+    WEEKDAY_DISCOUNT("평일 할인", 2_023, DESSERT, List.of(SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY)),
+    WEEKEND_DISCOUNT("주말 할인", 2_023, MAIN, List.of(FRIDAY, SATURDAY));
 
     private static final Integer SPECIAL_DISCOUNT_AMOUNT = 1_000;
 
+    private final String name;
     private final Integer amount;
     private final ItemCategory targetCategory;
     private final List<DayOfWeek> targetDays;
@@ -52,7 +53,12 @@ public enum DiscountEvent {
         return 0;
     }
 
-    private DiscountEvent(int amount, ItemCategory category, List<DayOfWeek> days) {
+    public String getName() {
+        return this.name;
+    }
+
+    private DiscountEvent(String name, int amount, ItemCategory category, List<DayOfWeek> days) {
+        this.name = name;
         this.amount = amount;
         this.targetCategory = category;
         this.targetDays = days;

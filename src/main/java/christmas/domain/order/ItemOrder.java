@@ -36,12 +36,12 @@ public class ItemOrder {
         return quantity * item.getPrice();
     }
 
-    public int totalPriceAfterDiscount(int discountAmount) {
-        return quantity * (item.getPrice() - discountAmount);
-    }
-
     public ItemCategory getCategory() {
         return item.getCategory();
+    }
+
+    public String getItemName() {
+        return item.getName();
     }
 
     private static void validateQuantityLowerBound(ItemOrderInput input) throws InvalidQuantityException {
