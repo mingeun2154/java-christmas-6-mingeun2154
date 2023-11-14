@@ -1,5 +1,10 @@
 package christmas.domain;
 
+import static christmas.domain.order.MenuItem.CHOCOLATE_CAKE;
+import static christmas.domain.order.MenuItem.MUSHROOM_SOUP;
+import static christmas.domain.order.MenuItem.RED_WINE;
+import static christmas.domain.order.MenuItem.SEAFOOD_PASTA;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 import christmas.IO.ItemOrderInput;
@@ -68,5 +73,15 @@ public class OrderTest {
         assertThatThrownBy(
                 () -> OrderBasket.of(MultipleOrderInput.of(input))
         ).isInstanceOf(DuplicateItemInOrderException.class);
+    }
+
+    @DisplayName("주문한 상품들의 가격 총합을 계산")
+    @ParameterizedTest
+    @ValueSource(strings = {"양송이수프-5,해산물파스타-2,초코케이크-5,레드와인-2"})
+    void calculateTotalPriceWithOutDiscount(String input) {
+        OrderBasket orders = OrderBasket.of(MultipleOrderInput.of(input));
+        int expectedPrice = 5 * MUSHROOM_SOUP.getPrice() + 2 * SEAFOOD_PASTA.getPrice()
+                + 5 * CHOCOLATE_CAKE.getPrice() + 2 * RED_WINE.getPrice();
+        assertThat(orders.getTotalPrice()).isEqualTo(expectedPrice);
     }
 }

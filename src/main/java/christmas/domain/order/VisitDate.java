@@ -21,6 +21,10 @@ public class VisitDate {
         return new VisitDate(EVENT_MONTH, day.getNumber());
     }
 
+    public int getDay() {
+        return date.getDayOfMonth();
+    }
+
     private static void validateVisitDate(int day) throws InValidVisitDateException {
         if (!isDayInEventMonth(day))
             throw new InValidVisitDateException();

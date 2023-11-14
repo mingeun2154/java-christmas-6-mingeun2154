@@ -25,6 +25,10 @@ public class ItemOrder {
         return quantity;
     }
 
+    public int getPrice() {
+        return quantity * item.getPrice();
+    }
+
     public Category getCategory() {
         return item.getCategory();
     }

@@ -31,6 +31,10 @@ public class OrderBasket {
         return result;
     }
 
+    public int getTotalPrice() {
+        return orderedItems.stream().mapToInt(ItemOrder::getPrice).sum();
+    }
+
     private static void validateTotalQuantity(OrderBasket orders) throws InvalidQuantityException {
         if (countTotalItemsQuantity(orders) > MAX_TOTAL_QUANTITY)
             throw new InvalidQuantityException();
@@ -42,10 +46,6 @@ public class OrderBasket {
                 return;
         }
         throw new DrinksOnlyOrderedException();
-    }
-
-    private static void validateDuplicate(OrderBasket orders) throws DuplicateItemInOrderException {
-
     }
 
     private static int countTotalItemsQuantity(OrderBasket orders) {
