@@ -1,6 +1,6 @@
 package christmas.domain.order;
 
-import static christmas.domain.order.Category.DRINK;
+import static christmas.domain.order.ItemCategory.DRINK;
 
 import christmas.IO.ItemOrderInput;
 import christmas.IO.MultipleOrderInput;
@@ -11,18 +11,18 @@ import christmas.exceptions.InvalidQuantityException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OrderBasket {
+public class Basket {
 
     private static final Integer MAX_TOTAL_QUANTITY = 20;
     private final List<ItemOrder> orderedItems;
 
-    private OrderBasket() {
+    private Basket() {
         orderedItems = new ArrayList<>();
     }
 
-    public static OrderBasket of(MultipleOrderInput input)
+    public static Basket of(MultipleOrderInput input)
             throws InvalidOrderInputPattern, InvalidQuantityException, DrinksOnlyOrderedException {
-        OrderBasket result = new OrderBasket();
+        Basket result = new Basket();
         for (ItemOrderInput orderInput : input.getOrders()) {
             result.orderedItems.add(ItemOrder.of(orderInput));
         }
@@ -42,12 +42,12 @@ public class OrderBasket {
         );
     }
 
-    private static void validateTotalQuantity(OrderBasket orders) throws InvalidQuantityException {
+    private static void validateTotalQuantity(Basket orders) throws InvalidQuantityException {
         if (countTotalItemsQuantity(orders) > MAX_TOTAL_QUANTITY)
             throw new InvalidQuantityException();
     }
 
-    private static void validateDrinksOnlyOrder(OrderBasket orders) throws DrinksOnlyOrderedException {
+    private static void validateDrinksOnlyOrder(Basket orders) throws DrinksOnlyOrderedException {
         for (ItemOrder item : orders.orderedItems) {
             if (item.getCategory() != DRINK)
                 return;
@@ -55,7 +55,7 @@ public class OrderBasket {
         throw new DrinksOnlyOrderedException();
     }
 
-    private static int countTotalItemsQuantity(OrderBasket orders) {
+    private static int countTotalItemsQuantity(Basket orders) {
         int totalQuantity = 0;
         for (ItemOrder item : orders.orderedItems) {
             totalQuantity += item.getQuantity();

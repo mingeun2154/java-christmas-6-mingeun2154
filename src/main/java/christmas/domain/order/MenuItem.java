@@ -1,9 +1,9 @@
 package christmas.domain.order;
 
-import static christmas.domain.order.Category.APPETIZER;
-import static christmas.domain.order.Category.DESSERT;
-import static christmas.domain.order.Category.DRINK;
-import static christmas.domain.order.Category.MAIN;
+import static christmas.domain.order.ItemCategory.APPETIZER;
+import static christmas.domain.order.ItemCategory.DESSERT;
+import static christmas.domain.order.ItemCategory.DRINK;
+import static christmas.domain.order.ItemCategory.MAIN;
 
 import christmas.exceptions.NoSuchItemExistsException;
 import java.util.Arrays;
@@ -41,7 +41,7 @@ public enum MenuItem {
     CHAMPAGNE(DRINK, "샴페인", 25_000);
 
 
-    private final Category category;
+    private final ItemCategory itemCategory;
     private final String name;
     private final Integer price;
 
@@ -52,16 +52,16 @@ public enum MenuItem {
                 .orElseThrow(NoSuchItemExistsException::new);
     }
 
-    public Category getCategory() {
-        return category;
+    public ItemCategory getCategory() {
+        return itemCategory;
     }
 
     public int getPrice() {
         return price;
     }
 
-    private MenuItem(Category category, String name, Integer price) {
-        this.category = category;
+    private MenuItem(ItemCategory itemCategory, String name, Integer price) {
+        this.itemCategory = itemCategory;
         this.name = name;
         this.price = price;
     }

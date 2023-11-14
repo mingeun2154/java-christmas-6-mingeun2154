@@ -1,7 +1,7 @@
 package christmas.domain.event;
 
-import static christmas.domain.order.Category.DESSERT;
-import static christmas.domain.order.Category.MAIN;
+import static christmas.domain.order.ItemCategory.DESSERT;
+import static christmas.domain.order.ItemCategory.MAIN;
 
 import christmas.domain.order.ItemOrder;
 import christmas.domain.order.VisitDate;

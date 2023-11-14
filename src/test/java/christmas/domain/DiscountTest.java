@@ -8,7 +8,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import christmas.IO.MultipleOrderInput;
 import christmas.IO.PureNumber;
-import christmas.domain.order.OrderBasket;
+import christmas.domain.order.Basket;
 import christmas.domain.order.VisitDate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -26,7 +26,7 @@ public class DiscountTest {
                 + 5 * CHOCOLATE_CAKE.getPrice() + 2 * RED_WINE.getPrice();
         final Integer discountAmount = 5 * 2_023;
         final VisitDate visitDate = VisitDate.of(PureNumber.wrap(day));
-        final OrderBasket orders = OrderBasket.of(MultipleOrderInput.of(orderInputs));
+        final Basket orders = Basket.of(MultipleOrderInput.of(orderInputs));
         assertThat(orders.totalPriceAfterDiscount(visitDate))
                 .isEqualTo(totalPriceBeforeDiscount - discountAmount);
     }
@@ -44,7 +44,7 @@ public class DiscountTest {
                 + 5 * CHOCOLATE_CAKE.getPrice() + 2 * RED_WINE.getPrice();
         final Integer discountAmount = 5 * 2_023 + christmasDDayDiscountAmount(day);
         final VisitDate visitDate = VisitDate.of(PureNumber.wrap(day));
-        final OrderBasket orders = OrderBasket.of(MultipleOrderInput.of(orderInputs));
+        final Basket orders = Basket.of(MultipleOrderInput.of(orderInputs));
         assertThat(orders.totalPriceAfterDiscount(visitDate))
                 .isEqualTo(totalPriceBeforeDiscount - discountAmount);
     }
@@ -58,7 +58,7 @@ public class DiscountTest {
                 + 5 * CHOCOLATE_CAKE.getPrice() + 2 * RED_WINE.getPrice();
         final Integer discountAmount = 2 * 2_023;
         final VisitDate visitDate = VisitDate.of(PureNumber.wrap(day));
-        final OrderBasket orders = OrderBasket.of(MultipleOrderInput.of(orderInputs));
+        final Basket orders = Basket.of(MultipleOrderInput.of(orderInputs));
         assertThat(orders.totalPriceAfterDiscount(visitDate))
                 .isEqualTo(totalPriceBeforeDiscount - discountAmount);
     }
@@ -78,7 +78,7 @@ public class DiscountTest {
                 + 5 * CHOCOLATE_CAKE.getPrice() + 2 * RED_WINE.getPrice();
         final Integer discountAmount = 2 * 2_023 + christmasDDayDiscountAmount(day);
         final VisitDate visitDate = VisitDate.of(PureNumber.wrap(day));
-        final OrderBasket orders = OrderBasket.of(MultipleOrderInput.of(orderInputs));
+        final Basket orders = Basket.of(MultipleOrderInput.of(orderInputs));
         assertThat(orders.totalPriceAfterDiscount(visitDate))
                 .isEqualTo(totalPriceBeforeDiscount - discountAmount);
     }

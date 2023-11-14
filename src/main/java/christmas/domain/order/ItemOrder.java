@@ -36,7 +36,7 @@ public class ItemOrder {
         return quantity * (item.getPrice() - discountAmount);
     }
 
-    public Category getCategory() {
+    public ItemCategory getCategory() {
         return item.getCategory();
     }
 

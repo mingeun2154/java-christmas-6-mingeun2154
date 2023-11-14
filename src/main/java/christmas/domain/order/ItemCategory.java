@@ -1,6 +1,6 @@
 package christmas.domain.order;
 
-public enum Category {
+public enum ItemCategory {
 
     APPETIZER("애피타이저"),
     MAIN("메인"),
@@ -9,7 +9,7 @@ public enum Category {
 
     private final String name;
 
-    private Category(String name) {
+    private ItemCategory(String name) {
         this.name = name;
     }
 }
