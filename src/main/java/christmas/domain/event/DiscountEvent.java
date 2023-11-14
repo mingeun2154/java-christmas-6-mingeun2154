@@ -12,7 +12,9 @@ public class DiscountEvent {
      * 총 금액의 할인된 금액을 반환한다.
      */
     public static int discount(int totalAmount, VisitDate visitDate) {
-        return applyChristmasDDayDiscount(totalAmount, visitDate);
+        return totalAmount
+                - christmasDDayDiscountAmount(visitDate)
+                - specialDiscountAmount(visitDate);
     }
 
     /**
@@ -27,10 +29,10 @@ public class DiscountEvent {
         return afterDiscount;
     }
 
-    private static int applyChristmasDDayDiscount(int before, VisitDate visitDate) {
+    private static int christmasDDayDiscountAmount(VisitDate visitDate) {
         if (visitDate.isChristmasDDay())
-            return before - (100 * (visitDate.getDay() - 1) + 1_000);
-        return before;
+            return (100 * (visitDate.getDay() - 1) + 1_000);
+        return 0;
     }
 
     private static int applyWeekdayDiscount(ItemOrder order) {
@@ -45,5 +47,12 @@ public class DiscountEvent {
             return order.totalPriceAfterDiscount(2_023);
         }
         return order.totalPriceBeforeDiscount();
+    }
+
+    private static int specialDiscountAmount(VisitDate visitDate) {
+        if (visitDate.isStarMarked()) {
+            return 1_000;
+        }
+        return 0;
     }
 }

@@ -83,6 +83,34 @@ public class DiscountTest {
                 .isEqualTo(totalPriceBeforeDiscount - discountAmount);
     }
 
+    @DisplayName("특별 할인 + 평일 할인 + 크리스마스 디데이 할인")
+    @ParameterizedTest
+    @CsvSource(value = {"3 양송이수프-5,해산물파스타-2,초코케이크-5,레드와인-2",
+            "10 양송이수프-5,해산물파스타-2,초코케이크-5,레드와인-2",
+            "17 양송이수프-5,해산물파스타-2,초코케이크-5,레드와인-2",
+            "24 양송이수프-5,해산물파스타-2,초코케이크-5,레드와인-2",
+            "25 양송이수프-5,해산물파스타-2,초코케이크-5,레드와인-2"}, delimiter = ' ')
+    void hitSpecialAndWeekdayAndChristmasDDayDiscount(String day, String orderInputs) {
+        final Integer totalPriceBeforeDiscount = 5 * MUSHROOM_SOUP.getPrice() + 2 * SEAFOOD_PASTA.getPrice()
+                + 5 * CHOCOLATE_CAKE.getPrice() + 2 * RED_WINE.getPrice();
+        final Integer discountAmount = 5 * 2_023 + 1_000 + christmasDDayDiscountAmount(day);
+        final Basket orders = Basket.of(MultipleOrderInput.of(orderInputs));
+        assertThat(orders.totalPriceAfterDiscount(VisitDate.of(PureNumber.wrap(day))))
+                .isEqualTo(totalPriceBeforeDiscount - discountAmount);
+    }
+
+    @DisplayName("특별 할인 + 평일 할인")
+    @ParameterizedTest
+    @CsvSource(value = {"31 양송이수프-5,해산물파스타-2,초코케이크-5,레드와인-2"}, delimiter = ' ')
+    void hitSpecialAndWeekdayDiscount(String day, String orderInputs) {
+        final Integer totalPriceBeforeDiscount = 5 * MUSHROOM_SOUP.getPrice() + 2 * SEAFOOD_PASTA.getPrice()
+                + 5 * CHOCOLATE_CAKE.getPrice() + 2 * RED_WINE.getPrice();
+        final Integer discountAmount = 5 * 2_023 + 1_000;
+        final Basket orders = Basket.of(MultipleOrderInput.of(orderInputs));
+        assertThat(orders.totalPriceAfterDiscount(VisitDate.of(PureNumber.wrap(day))))
+                .isEqualTo(totalPriceBeforeDiscount - discountAmount);
+    }
+
     int christmasDDayDiscountAmount(String day) {
         Integer d = Integer.parseInt(day);
         if (d >= 1 && d <= 25) {
