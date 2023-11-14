@@ -49,4 +49,16 @@ public class VisitDateTest {
         assertThat(VisitDate.of(PureNumber.wrap(weekend)).isWeekday()).isFalse();
         assertThat(VisitDate.of(PureNumber.wrap(weekday)).isWeekday()).isTrue();
     }
+
+    /**
+     * 별이 표시된 날짜들은 VisitDate의 static 필드에서 설정
+     */
+
+    @DisplayName("별이 표시된 날짜인지 아닌지 판정")
+    @ParameterizedTest
+    @CsvSource({"3,1", "10,13", "17,18", "24,26", "25,29", "31,30"})
+    void isTodayStarMarkedDay(String star, String non) {
+        assertThat(VisitDate.of(PureNumber.wrap(star)).isStarMarked()).isTrue();
+        assertThat(VisitDate.of(PureNumber.wrap(non)).isStarMarked()).isFalse();
+    }
 }

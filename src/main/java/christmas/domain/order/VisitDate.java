@@ -9,6 +9,7 @@ import christmas.IO.PureNumber;
 import christmas.exceptions.InValidVisitDateException;
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.List;
 
 public class VisitDate {
 
@@ -16,6 +17,8 @@ public class VisitDate {
     private static final int EVENT_YEAR = 2023;
     private static final Integer FIRST_DAY = 1;
     private static final Integer LAST_DAY = 31;
+    private static final List<Integer> STAR_DAYS = List.of(3, 10, 17, 24, 25, 31);
+
     private final LocalDate visitDate;
 
     private VisitDate(Month month, int day) {
@@ -37,6 +40,10 @@ public class VisitDate {
 
     public boolean isWeekday() {
         return !isWeekend();
+    }
+
+    public boolean isStarMarked() {
+        return STAR_DAYS.contains(visitDate.getDayOfMonth());
     }
 
     private static void validateVisitDate(int day) throws InValidVisitDateException {
