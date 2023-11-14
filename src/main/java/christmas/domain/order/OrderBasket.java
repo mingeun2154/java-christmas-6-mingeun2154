@@ -4,8 +4,8 @@ import static christmas.domain.order.Category.DRINK;
 
 import christmas.IO.ItemOrderInput;
 import christmas.IO.MultipleOrderInput;
+import christmas.domain.discount.DiscountedPrice;
 import christmas.exceptions.DrinksOnlyOrderedException;
-import christmas.exceptions.DuplicateItemInOrderException;
 import christmas.exceptions.InvalidOrderInputPattern;
 import christmas.exceptions.InvalidQuantityException;
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ public class OrderBasket {
         return result;
     }
 
-    public int getTotalPrice() {
+    public int totalPrice() {
         return orderedItems.stream().mapToInt(ItemOrder::getPrice).sum();
     }
 

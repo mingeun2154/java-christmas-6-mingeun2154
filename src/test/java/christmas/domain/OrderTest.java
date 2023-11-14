@@ -82,6 +82,6 @@ public class OrderTest {
         OrderBasket orders = OrderBasket.of(MultipleOrderInput.of(input));
         int expectedPrice = 5 * MUSHROOM_SOUP.getPrice() + 2 * SEAFOOD_PASTA.getPrice()
                 + 5 * CHOCOLATE_CAKE.getPrice() + 2 * RED_WINE.getPrice();
-        assertThat(orders.getTotalPrice()).isEqualTo(expectedPrice);
+        assertThat(orders.totalPrice()).isEqualTo(expectedPrice);
     }
 }
