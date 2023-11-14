@@ -1,7 +1,9 @@
 package christmas.domain.order;
 
 import static java.time.DayOfWeek.FRIDAY;
+import static java.time.DayOfWeek.MONDAY;
 import static java.time.DayOfWeek.SATURDAY;
+import static java.time.DayOfWeek.SUNDAY;
 
 import christmas.IO.PureNumber;
 import christmas.exceptions.InValidVisitDateException;
@@ -31,6 +33,10 @@ public class VisitDate {
 
     public boolean isWeekend() {
         return (visitDate.getDayOfWeek() == FRIDAY || visitDate.getDayOfWeek() == SATURDAY);
+    }
+
+    public boolean isWeekday() {
+        return !isWeekend();
     }
 
     private static void validateVisitDate(int day) throws InValidVisitDateException {

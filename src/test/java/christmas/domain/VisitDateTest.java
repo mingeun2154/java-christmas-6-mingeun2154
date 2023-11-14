@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.jupiter.params.provider.ValueSource;
 
 public class VisitDateTest {
 
@@ -31,11 +30,23 @@ public class VisitDateTest {
         );
     }
 
+    /**
+     * 년도는 VisitDate의 static 필드에서 설정
+     */
+
     @DisplayName("입력된 날짜가 주말(금,토)인지 확인(2023년 기준)")
     @ParameterizedTest
     @CsvSource({"1,4", "2,12", "8,20", "9,28", "15,25", "16,3", "22,10", "23,31", "29,19", "30,18"})
     void isTodayAWeekend(String weekend, String weekday) {
         assertThat(VisitDate.of(PureNumber.wrap(weekend)).isWeekend()).isTrue();
         assertThat(VisitDate.of(PureNumber.wrap(weekday)).isWeekend()).isFalse();
+    }
+
+    @DisplayName("입력된 날짜가 평일(일~목)인지 확인(2023년 기준)")
+    @ParameterizedTest
+    @CsvSource({"1,4", "2,12", "8,20", "9,28", "15,25", "16,3", "22,10", "23,31", "29,19", "30,18"})
+    void isTodayAWeekDay(String weekend, String weekday) {
+        assertThat(VisitDate.of(PureNumber.wrap(weekend)).isWeekday()).isFalse();
+        assertThat(VisitDate.of(PureNumber.wrap(weekday)).isWeekday()).isTrue();
     }
 }
