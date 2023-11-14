@@ -21,6 +21,10 @@ public class ItemOrder {
         return new ItemOrder(MenuItem.of(input.getItemName()), input.getQuantity());
     }
 
+    public static ItemOrder of(MenuItem item, int quantity) {
+        return new ItemOrder(item, quantity);
+    }
+
     public Integer getQuantity() {
         return quantity;
     }

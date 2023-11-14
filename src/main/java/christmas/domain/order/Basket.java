@@ -16,8 +16,8 @@ public class Basket {
     private static final Integer MAX_TOTAL_QUANTITY = 20;
     private final List<ItemOrder> orderedItems;
 
-    private Basket() {
-        orderedItems = new ArrayList<>();
+    public static Basket createEmptyBasket() {
+        return new Basket();
     }
 
     public static Basket of(MultipleOrderInput input)
@@ -40,6 +40,14 @@ public class Basket {
                 orderedItems.stream().mapToInt((item) -> DiscountEvent.discount(item, visitDate)).sum()
                 , visitDate
         );
+    }
+
+    public void addItem(MenuItem item, int quantity) {
+        orderedItems.add(ItemOrder.of(item, quantity));
+    }
+
+    private Basket() {
+        orderedItems = new ArrayList<>();
     }
 
     private static void validateTotalQuantity(Basket orders) throws InvalidQuantityException {
