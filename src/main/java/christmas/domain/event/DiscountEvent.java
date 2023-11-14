@@ -31,7 +31,7 @@ public class DiscountEvent {
 
     private static int christmasDDayDiscountAmount(VisitDate visitDate) {
         if (visitDate.isChristmasDDay())
-            return (100 * (visitDate.getDay() - 1) + 1_000);
+            return (100 * (visitDate.getDayOfMonth() - 1) + 1_000);
         return 0;
     }
 
@@ -50,7 +50,7 @@ public class DiscountEvent {
     }
 
     private static int specialDiscountAmount(VisitDate visitDate) {
-        if (visitDate.isStarMarked()) {
+        if (visitDate.isSpecialDay()) {
             return 1_000;
         }
         return 0;

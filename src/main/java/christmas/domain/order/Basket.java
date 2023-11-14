@@ -4,6 +4,7 @@ import static christmas.domain.order.ItemCategory.DRINK;
 
 import christmas.IO.ItemOrderInput;
 import christmas.IO.MultipleOrderInput;
+import christmas.domain.event.DiscountPolicy;
 import christmas.domain.event.DiscountEvent;
 import christmas.exceptions.DrinksOnlyOrderedException;
 import christmas.exceptions.InvalidOrderInputPattern;
@@ -44,6 +45,13 @@ public class Basket {
 
     public void addItem(MenuItem item, int quantity) {
         orderedItems.add(ItemOrder.of(item, quantity));
+    }
+
+    public int countItemsDiscountByEvent(DiscountPolicy policy) {
+        return orderedItems.stream()
+                .filter((order) -> policy.matchCategory(order.getCategory()))
+                .mapToInt((order) -> order.getQuantity())
+                .sum();
     }
 
     private Basket() {

@@ -58,7 +58,7 @@ public class VisitDateTest {
     @ParameterizedTest
     @CsvSource({"3,1", "10,13", "17,18", "24,26", "25,29", "31,30"})
     void isTodayStarMarkedDay(String star, String non) {
-        assertThat(VisitDate.of(PureNumber.wrap(star)).isStarMarked()).isTrue();
-        assertThat(VisitDate.of(PureNumber.wrap(non)).isStarMarked()).isFalse();
+        assertThat(VisitDate.of(PureNumber.wrap(star)).isSpecialDay()).isTrue();
+        assertThat(VisitDate.of(PureNumber.wrap(non)).isSpecialDay()).isFalse();
     }
 }

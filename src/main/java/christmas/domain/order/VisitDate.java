@@ -1,12 +1,11 @@
 package christmas.domain.order;
 
 import static java.time.DayOfWeek.FRIDAY;
-import static java.time.DayOfWeek.MONDAY;
 import static java.time.DayOfWeek.SATURDAY;
-import static java.time.DayOfWeek.SUNDAY;
 
 import christmas.IO.PureNumber;
 import christmas.exceptions.InValidVisitDateException;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
@@ -30,8 +29,12 @@ public class VisitDate {
         return new VisitDate(EVENT_MONTH, day.getNumber());
     }
 
-    public int getDay() {
+    public int getDayOfMonth() {
         return visitDate.getDayOfMonth();
+    }
+
+    public DayOfWeek getDayOfWeek() {
+        return visitDate.getDayOfWeek();
     }
 
     public boolean isChristmasDDay() {
@@ -46,7 +49,7 @@ public class VisitDate {
         return !isWeekend();
     }
 
-    public boolean isStarMarked() {
+    public boolean isSpecialDay() {
         return STAR_DAYS.contains(visitDate.getDayOfMonth());
     }
 
