@@ -2,57 +2,59 @@ package christmas.domain.event;
 
 import static christmas.domain.order.ItemCategory.DESSERT;
 import static christmas.domain.order.ItemCategory.MAIN;
+import static java.time.DayOfWeek.FRIDAY;
+import static java.time.DayOfWeek.MONDAY;
+import static java.time.DayOfWeek.SATURDAY;
+import static java.time.DayOfWeek.SUNDAY;
+import static java.time.DayOfWeek.THURSDAY;
+import static java.time.DayOfWeek.TUESDAY;
+import static java.time.DayOfWeek.WEDNESDAY;
 
-import christmas.domain.order.ItemOrder;
+import christmas.domain.order.ItemCategory;
 import christmas.domain.order.VisitDate;
+import java.time.DayOfWeek;
+import java.util.List;
 
-public class DiscountEvent {
+public enum DiscountEvent {
 
-    /**
-     * 총 금액의 할인된 금액을 반환한다.
-     */
-    public static int discount(int totalAmount, VisitDate visitDate) {
-        return totalAmount
-                - christmasDDayDiscountAmount(visitDate)
-                - specialDiscountAmount(visitDate);
+    WEEKDAY_DISCOUNT(2_023, DESSERT, List.of(SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY)),
+    WEEKEND_DISCOUNT(2_023, MAIN, List.of(FRIDAY, SATURDAY));
+
+    private static final Integer SPECIAL_DISCOUNT_AMOUNT = 1_000;
+
+    private final Integer amount;
+    private final ItemCategory targetCategory;
+    private final List<DayOfWeek> targetDays;
+
+    public int amount() {
+        return amount;
     }
 
-    /**
-     * 상품 한 개의 할인된 금액을 반환한다.
-     */
-    public static int discount(ItemOrder order, VisitDate visitDate) {
-        int afterDiscount = order.totalPriceBeforeDiscount();
-        if (visitDate.isWeekday())
-            afterDiscount = applyWeekdayDiscount(order);
-        if (visitDate.isWeekend())
-            afterDiscount = applyWeekendDiscount(order);
-        return afterDiscount;
+    public boolean matchPeriod(VisitDate visitDate) {
+        return targetDays.contains(visitDate.getDayOfWeek());
     }
 
-    private static int christmasDDayDiscountAmount(VisitDate visitDate) {
-        if (visitDate.isChristmasDDay())
+    public boolean matchCategory(ItemCategory category) {
+        return targetCategory == category;
+    }
+
+    public static int christmasDDayDiscountAmount(VisitDate visitDate) {
+        if (visitDate.isChristmasDDay()) {
             return (100 * (visitDate.getDayOfMonth() - 1) + 1_000);
+        }
         return 0;
     }
 
-    private static int applyWeekdayDiscount(ItemOrder order) {
-        if (order.getCategory() == DESSERT) {
-            return order.totalPriceAfterDiscount(2_023);
-        }
-        return order.totalPriceBeforeDiscount();
-    }
-
-    private static int applyWeekendDiscount(ItemOrder order) {
-        if (order.getCategory() == MAIN) {
-            return order.totalPriceAfterDiscount(2_023);
-        }
-        return order.totalPriceBeforeDiscount();
-    }
-
-    private static int specialDiscountAmount(VisitDate visitDate) {
+    public static int specialDiscountAmount(VisitDate visitDate) {
         if (visitDate.isSpecialDay()) {
-            return 1_000;
+            return SPECIAL_DISCOUNT_AMOUNT;
         }
         return 0;
+    }
+
+    private DiscountEvent(int amount, ItemCategory category, List<DayOfWeek> days) {
+        this.amount = amount;
+        this.targetCategory = category;
+        this.targetDays = days;
     }
 }

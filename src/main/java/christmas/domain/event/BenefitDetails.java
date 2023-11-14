@@ -1,7 +1,7 @@
 package christmas.domain.event;
 
-import static christmas.domain.event.DiscountPolicy.WEEKDAY_DISCOUNT;
-import static christmas.domain.event.DiscountPolicy.WEEKEND_DISCOUNT;
+import static christmas.domain.event.DiscountEvent.WEEKDAY_DISCOUNT;
+import static christmas.domain.event.DiscountEvent.WEEKEND_DISCOUNT;
 
 import christmas.domain.order.Basket;
 import christmas.domain.order.VisitDate;
@@ -9,7 +9,7 @@ import java.util.EnumMap;
 
 public class BenefitDetails {
 
-    private final EnumMap<DiscountPolicy, Integer> discountDetails;
+    private final EnumMap<DiscountEvent, Integer> discountDetails;
     private final Integer christmasDDayDiscountAmount;
     private final Integer specialDiscountAmount;
     private final Basket gifts;
@@ -48,8 +48,8 @@ public class BenefitDetails {
     }
 
     private BenefitDetails(Basket orders, VisitDate visitDate) {
-        discountDetails = new EnumMap<>(DiscountPolicy.class);
-        for (DiscountPolicy policy : DiscountPolicy.values()) {
+        discountDetails = new EnumMap<>(DiscountEvent.class);
+        for (DiscountEvent policy : DiscountEvent.values()) {
             if (policy.matchPeriod(visitDate)) {
                 this.discountDetails.put(policy, orders.countItemsDiscountByEvent(policy));
             }
@@ -57,8 +57,8 @@ public class BenefitDetails {
                 this.discountDetails.put(policy, 0);
             }
         }
-        this.christmasDDayDiscountAmount = DiscountPolicy.christmasDDayDiscountAmount(visitDate);
-        this.specialDiscountAmount = DiscountPolicy.specialDiscountAmount(visitDate);
+        this.christmasDDayDiscountAmount = DiscountEvent.christmasDDayDiscountAmount(visitDate);
+        this.specialDiscountAmount = DiscountEvent.specialDiscountAmount(visitDate);
         gifts = Gift.grant(orders.totalPriceBeforeDiscount());
     }
 }
