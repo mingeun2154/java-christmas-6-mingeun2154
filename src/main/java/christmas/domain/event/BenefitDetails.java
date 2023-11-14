@@ -76,6 +76,6 @@ public class BenefitDetails {
         }
         this.christmasDDayDiscountAmount = DiscountEvent.christmasDDayDiscountAmount(visitDate);
         this.specialDiscountAmount = DiscountEvent.specialDiscountAmount(visitDate);
-        gifts = Gift.grant(orders.totalPriceBeforeDiscount());
+        gifts = Gift.of(orders.totalPriceBeforeDiscount());
     }
 }

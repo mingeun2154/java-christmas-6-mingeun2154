@@ -9,7 +9,7 @@ public class PureNumber {
     private static final Pattern PURE_NUMBER_PATTERN = Pattern.compile("^\\d+$");
     private final Integer number;
 
-    public static PureNumber wrap(String rawInput) throws NonPureNumberException {
+    public static PureNumber of(String rawInput) throws NonPureNumberException {
         return new PureNumber(rawInput.trim());
     }
 

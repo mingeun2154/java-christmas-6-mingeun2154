@@ -26,7 +26,7 @@ public class InputView {
     private VisitDate readUntilUserInputValidDate() {
         while (true) {
             try {
-                return VisitDate.of(PureNumber.wrap(Console.readLine()));
+                return VisitDate.of(PureNumber.of(Console.readLine()));
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
             }

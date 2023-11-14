@@ -26,7 +26,7 @@ public class ChristmasPromotionMission implements Mission {
     public void run() {
         visitDate = inputView.readExpectedVisitDate();
         orders = inputView.readOrder();
-        gifts = Gift.grant(orders.totalPriceBeforeDiscount());
+        gifts = Gift.of(orders.totalPriceBeforeDiscount());
         benefitDetails = BenefitDetails.of(orders, visitDate);
         outputView.printOrderedMenuItems(orders.itemsView());
         outputView.printTotalAmountBeforeDiscount(orders.totalPriceBeforeDiscount());

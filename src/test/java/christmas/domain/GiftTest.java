@@ -19,10 +19,10 @@ public class GiftTest {
         Gift gift = new Gift();
         Basket giftOrders = Basket.of(MultipleOrderInput.of(giftOrder));
         Basket noGiftOrders = Basket.of(MultipleOrderInput.of(noGiftOrder));
-        Assertions.assertThat(Gift.grant(giftOrders.totalPriceBeforeDiscount())
+        Assertions.assertThat(Gift.of(giftOrders.totalPriceBeforeDiscount())
                         .totalPriceBeforeDiscount())
                 .isEqualTo(CHAMPAGNE.getPrice());
-        Assertions.assertThat(Gift.grant(noGiftOrders.totalPriceBeforeDiscount())
+        Assertions.assertThat(Gift.of(noGiftOrders.totalPriceBeforeDiscount())
                         .totalPriceBeforeDiscount())
                 .isEqualTo(0);
     }
