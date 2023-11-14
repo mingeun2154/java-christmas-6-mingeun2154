@@ -25,7 +25,7 @@ public enum MenuItem {
      */
 
     MUSHROOM_SOUP(APPETIZER, "양송이수프", 6_000),
-    TAPAS(APPETIZER, "타파스", 5_000),
+    TAPAS(APPETIZER, "타파스", 5_500),
     CAESAR_SALAD(APPETIZER, "시저샐러드", 8_000),
 
     T_BONE_STEAK(MAIN, "티본스테이크", 55_000),
@@ -38,7 +38,7 @@ public enum MenuItem {
 
     ZERO_COKE(DRINK, "제로콜라", 3_000),
     RED_WINE(DRINK, "레드와인", 60_000),
-    CHAMPAGNE(DRINK, "샴페인", 26_000);
+    CHAMPAGNE(DRINK, "샴페인", 25_000);
 
 
     private final Category category;
