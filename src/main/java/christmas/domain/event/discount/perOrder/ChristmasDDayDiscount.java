@@ -1,12 +1,14 @@
 package christmas.domain.event.discount.perOrder;
 
 import christmas.domain.order.VisitDate;
+import java.util.function.IntUnaryOperator;
 
 public class ChristmasDDayDiscount extends Discount implements DiscountPerOrder {
 
     private static final Integer EVENT_START_DAY_OF_MONTH_INCLUDE = 1;
     private static final Integer EVENT_END_DAY_OF_MONTH_INCLUDE = 25;
     private static final String EVENT_NAME = "크리스마스 디데이 할인";
+    private static final IntUnaryOperator BENEFIT_EXPRESSION = (d) -> 100 * (d - 1) + 1_000;
 
     @Override
     public int benefitAmount() {
@@ -31,11 +33,10 @@ public class ChristmasDDayDiscount extends Discount implements DiscountPerOrder 
 
 
     private static int calculateBenefitAmount(VisitDate visitDate) {
-        return 100 * (visitDate.getDayOfMonth() - 1) + 1_000;
+        return visitDate.applyLinearExpressionOnDayOfMonth(BENEFIT_EXPRESSION);
     }
 
     private static boolean inEventPeriod(VisitDate visitDate) {
-        return (visitDate.getDayOfMonth() >= EVENT_START_DAY_OF_MONTH_INCLUDE
-                && visitDate.getDayOfMonth() <= EVENT_END_DAY_OF_MONTH_INCLUDE);
+        return visitDate.matchDaysOfMonth(EVENT_START_DAY_OF_MONTH_INCLUDE, EVENT_END_DAY_OF_MONTH_INCLUDE);
     }
 }

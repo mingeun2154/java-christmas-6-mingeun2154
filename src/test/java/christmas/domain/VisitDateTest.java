@@ -1,9 +1,12 @@
 package christmas.domain;
 
+import static christmas.domain.event.discount.perItem.ChristmasPromotion.WEEKDAY_DISCOUNT;
+import static christmas.domain.event.discount.perItem.ChristmasPromotion.WEEKEND_DISCOUNT;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 import christmas.IO.PureNumber;
+import christmas.domain.event.discount.perOrder.SpecialDiscount;
 import christmas.domain.order.VisitDate;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -38,16 +41,16 @@ public class VisitDateTest {
     @ParameterizedTest
     @CsvSource({"1,4", "2,12", "8,20", "9,28", "15,25", "16,3", "22,10", "23,31", "29,19", "30,18"})
     void isTodayAWeekend(String weekend, String weekday) {
-        assertThat(VisitDate.of(PureNumber.of(weekend)).isWeekend()).isTrue();
-        assertThat(VisitDate.of(PureNumber.of(weekday)).isWeekend()).isFalse();
+        assertThat(WEEKEND_DISCOUNT.matchPeriod(VisitDate.of(PureNumber.of(weekend)))).isTrue();
+        assertThat(WEEKEND_DISCOUNT.matchPeriod(VisitDate.of(PureNumber.of(weekday)))).isFalse();
     }
 
     @DisplayName("입력된 날짜가 평일(일~목)인지 확인(2023년 기준)")
     @ParameterizedTest
     @CsvSource({"1,4", "2,12", "8,20", "9,28", "15,25", "16,3", "22,10", "23,31", "29,19", "30,18"})
     void isTodayAWeekDay(String weekend, String weekday) {
-        assertThat(VisitDate.of(PureNumber.of(weekend)).isWeekday()).isFalse();
-        assertThat(VisitDate.of(PureNumber.of(weekday)).isWeekday()).isTrue();
+        assertThat(WEEKDAY_DISCOUNT.matchPeriod(VisitDate.of(PureNumber.of(weekend)))).isFalse();
+        assertThat(WEEKDAY_DISCOUNT.matchPeriod(VisitDate.of(PureNumber.of(weekday)))).isTrue();
     }
 
     /**
@@ -58,7 +61,7 @@ public class VisitDateTest {
     @ParameterizedTest
     @CsvSource({"3,1", "10,13", "17,18", "24,26", "25,29", "31,30"})
     void isTodayStarMarkedDay(String star, String non) {
-        assertThat(VisitDate.of(PureNumber.of(star)).isSpecialDay()).isTrue();
-        assertThat(VisitDate.of(PureNumber.of(non)).isSpecialDay()).isFalse();
+        assertThat(SpecialDiscount.inEventPeriod(VisitDate.of(PureNumber.of(star)))).isTrue();
+        assertThat(SpecialDiscount.inEventPeriod(VisitDate.of(PureNumber.of(non)))).isFalse();
     }
 }

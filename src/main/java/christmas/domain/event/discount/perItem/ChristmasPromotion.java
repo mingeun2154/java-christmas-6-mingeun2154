@@ -19,7 +19,7 @@ public enum ChristmasPromotion implements DiscountPerOrder {
     private final String name;
     private final Integer amount;
     private final ItemCategory targetCategory;
-    private final List<DayOfWeek> targetDays;
+    private final List<DayOfWeek> targetDaysOfWeek;
 
     @Override
     public int benefitAmount() {
@@ -32,7 +32,7 @@ public enum ChristmasPromotion implements DiscountPerOrder {
     }
 
     public boolean matchPeriod(VisitDate visitDate) {
-        return targetDays.contains(visitDate.getDayOfWeek());
+        return visitDate.matchDaysOfWeek(targetDaysOfWeek);
     }
 
     public boolean matchCategory(ItemCategory category) {
@@ -43,6 +43,6 @@ public enum ChristmasPromotion implements DiscountPerOrder {
         this.name = name;
         this.amount = amount;
         this.targetCategory = category;
-        this.targetDays = days;
+        this.targetDaysOfWeek = days;
     }
 }
