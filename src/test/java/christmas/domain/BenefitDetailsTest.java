@@ -1,10 +1,15 @@
 package christmas.domain;
 
+import static christmas.domain.event.DiscountEvent.WEEKDAY_DISCOUNT;
+import static christmas.domain.event.DiscountEvent.WEEKEND_DISCOUNT;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import christmas.IO.MultipleOrderInput;
 import christmas.IO.PureNumber;
 import christmas.domain.event.BenefitDetails;
+import christmas.domain.event.ChristmasDDayDiscount;
+import christmas.domain.event.DiscountEvent;
+import christmas.domain.event.SpecialDiscount;
 import christmas.domain.order.Basket;
 import christmas.domain.order.VisitDate;
 import org.junit.jupiter.api.DisplayName;
@@ -19,10 +24,10 @@ public class BenefitDetailsTest {
     @Test
     void benefitDetailsTest() {
         BenefitDetails details = BenefitDetails.of(orders, visitDate);
-        assertThat(details.christmasDDayDiscountAmount()).isEqualTo(1_200);
-        assertThat(details.weekdayDiscountAmount()).isEqualTo(4_046);
-        assertThat(details.weekendDiscountAmount()).isEqualTo(0);
-        assertThat(details.specialDiscountAmount()).isEqualTo(1_000);
+        assertThat(details.discountAmountBy(ChristmasDDayDiscount.class)).isEqualTo(1_200);
+        assertThat(details.discountAmountBy(WEEKDAY_DISCOUNT)).isEqualTo(4_046);
+        assertThat(details.discountAmountBy(WEEKEND_DISCOUNT)).isEqualTo(0);
+        assertThat(details.discountAmountBy(SpecialDiscount.class)).isEqualTo(1_000);
         assertThat(details.giftAmount()).isEqualTo(25_000);
         assertThat(details.totalBenefitAmount()).isEqualTo(31_246);
     }
