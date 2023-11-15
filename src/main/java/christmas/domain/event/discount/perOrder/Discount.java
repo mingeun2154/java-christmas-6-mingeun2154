@@ -1,6 +1,6 @@
-package christmas.domain.event;
+package christmas.domain.event.discount.perOrder;
 
-public abstract class Discount {
+public abstract class Discount implements DiscountPerOrder {
 
     protected final Integer amount;
     private final String eventName;
@@ -10,6 +10,7 @@ public abstract class Discount {
         this.eventName = eventName;
     }
 
+    @Override
     public String getEventName() {
         return eventName;
     }

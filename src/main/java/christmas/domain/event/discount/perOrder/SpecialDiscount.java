@@ -1,4 +1,4 @@
-package christmas.domain.event;
+package christmas.domain.event.discount.perOrder;
 
 import christmas.domain.order.VisitDate;
 import java.util.List;

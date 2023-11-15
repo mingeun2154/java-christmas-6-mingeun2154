@@ -1,15 +1,14 @@
 package christmas.domain;
 
-import static christmas.domain.event.DiscountEvent.WEEKDAY_DISCOUNT;
-import static christmas.domain.event.DiscountEvent.WEEKEND_DISCOUNT;
+import static christmas.domain.event.discount.perItem.ChristmasPromotion.WEEKDAY_DISCOUNT;
+import static christmas.domain.event.discount.perItem.ChristmasPromotion.WEEKEND_DISCOUNT;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import christmas.IO.MultipleOrderInput;
 import christmas.IO.PureNumber;
 import christmas.domain.event.BenefitDetails;
-import christmas.domain.event.ChristmasDDayDiscount;
-import christmas.domain.event.DiscountEvent;
-import christmas.domain.event.SpecialDiscount;
+import christmas.domain.event.discount.perOrder.ChristmasDDayDiscount;
+import christmas.domain.event.discount.perOrder.SpecialDiscount;
 import christmas.domain.order.Basket;
 import christmas.domain.order.VisitDate;
 import org.junit.jupiter.api.DisplayName;

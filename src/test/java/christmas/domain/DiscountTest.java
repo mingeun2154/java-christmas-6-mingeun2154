@@ -1,7 +1,7 @@
 package christmas.domain;
 
-import static christmas.domain.event.DiscountEvent.WEEKDAY_DISCOUNT;
-import static christmas.domain.event.DiscountEvent.WEEKEND_DISCOUNT;
+import static christmas.domain.event.discount.perItem.ChristmasPromotion.WEEKDAY_DISCOUNT;
+import static christmas.domain.event.discount.perItem.ChristmasPromotion.WEEKEND_DISCOUNT;
 import static christmas.domain.order.MenuItem.CHOCOLATE_CAKE;
 import static christmas.domain.order.MenuItem.CHRISTMAS_PASTA;
 import static christmas.domain.order.MenuItem.MUSHROOM_SOUP;
@@ -34,7 +34,7 @@ public class DiscountTest {
     @ParameterizedTest
     @CsvSource(value = {"26 " + order, "27 " + order, "28 " + order}, delimiter = ' ')
     void hitOnlyWeekDayDiscount(String day, String orderInputs) {
-        final Integer discountAmount = DESSERT_COUNT * WEEKDAY_DISCOUNT.amount();
+        final Integer discountAmount = DESSERT_COUNT * WEEKDAY_DISCOUNT.benefitAmount();
         final VisitDate visitDate = VisitDate.of(PureNumber.of(day));
         final Basket orders = Basket.of(MultipleOrderInput.of(orderInputs));
         assertThat(orders.totalPriceBeforeDiscount() - BenefitDetails.of(orders, visitDate).totalBenefitAmount())
@@ -46,7 +46,7 @@ public class DiscountTest {
     @CsvSource(value = {"4 " + order, "4 " + order, "11 " + order, "14 " + order, "18 " + order, "21 " + order},
             delimiter = ' ')
     void hitChristmasDDayAndWeekDayDiscount(String day, String orderInputs) {
-        final Integer discountAmount = DESSERT_COUNT * WEEKDAY_DISCOUNT.amount() + christmasDDayDiscountAmount(day);
+        final Integer discountAmount = DESSERT_COUNT * WEEKDAY_DISCOUNT.benefitAmount() + christmasDDayDiscountAmount(day);
         final VisitDate visitDate = VisitDate.of(PureNumber.of(day));
         final Basket orders = Basket.of(MultipleOrderInput.of(orderInputs));
         assertThat(orders.totalPriceBeforeDiscount() - BenefitDetails.of(orders, visitDate).totalBenefitAmount())
@@ -57,7 +57,7 @@ public class DiscountTest {
     @ParameterizedTest
     @CsvSource(value = {"29 " + order, "30 " + order}, delimiter = ' ')
     void hitOnlyWeekendDiscount(String day, String orderInputs) {
-        final Integer discountAmount = MAIN_COUNT * WEEKEND_DISCOUNT.amount();
+        final Integer discountAmount = MAIN_COUNT * WEEKEND_DISCOUNT.benefitAmount();
         final VisitDate visitDate = VisitDate.of(PureNumber.of(day));
         final Basket orders = Basket.of(MultipleOrderInput.of(orderInputs));
         assertThat(orders.totalPriceBeforeDiscount() - BenefitDetails.of(orders, visitDate).totalBenefitAmount())
@@ -69,7 +69,7 @@ public class DiscountTest {
     @CsvSource(value = {"1 " + order, "2 " + order, "8 " + order, "9 " + order, "15 " + order, "16 " + order,
             "22 " + order, "23 " + order}, delimiter = ' ')
     void hitChristmasDDayAndWeekendDiscount(String day, String orderInputs) {
-        final Integer discountAmount = MAIN_COUNT * WEEKEND_DISCOUNT.amount() + christmasDDayDiscountAmount(day);
+        final Integer discountAmount = MAIN_COUNT * WEEKEND_DISCOUNT.benefitAmount() + christmasDDayDiscountAmount(day);
         final VisitDate visitDate = VisitDate.of(PureNumber.of(day));
         final Basket orders = Basket.of(MultipleOrderInput.of(orderInputs));
         assertThat(orders.totalPriceBeforeDiscount() - BenefitDetails.of(orders, visitDate).totalBenefitAmount())
@@ -82,7 +82,7 @@ public class DiscountTest {
             , delimiter = ' ')
     void hitSpecialAndWeekdayAndChristmasDDayDiscount(String day, String orderInputs) {
         final VisitDate visitDate = VisitDate.of(PureNumber.of(day));
-        final Integer discountAmount = DESSERT_COUNT * WEEKDAY_DISCOUNT.amount()
+        final Integer discountAmount = DESSERT_COUNT * WEEKDAY_DISCOUNT.benefitAmount()
                 + SPECIAL_DISCOUNT
                 + christmasDDayDiscountAmount(day);
         final Basket orders = Basket.of(MultipleOrderInput.of(orderInputs));
@@ -95,7 +95,7 @@ public class DiscountTest {
     @CsvSource(value = {"31 " + order}, delimiter = ' ')
     void hitSpecialAndWeekdayDiscount(String day, String orderInputs) {
         final VisitDate visitDate = VisitDate.of(PureNumber.of(day));
-        final Integer discountAmount = DESSERT_COUNT * WEEKDAY_DISCOUNT.amount()
+        final Integer discountAmount = DESSERT_COUNT * WEEKDAY_DISCOUNT.benefitAmount()
                 + SPECIAL_DISCOUNT;
         final Basket orders = Basket.of(MultipleOrderInput.of(orderInputs));
         assertThat(orders.totalPriceBeforeDiscount() - BenefitDetails.of(orders, visitDate).totalBenefitAmount())
