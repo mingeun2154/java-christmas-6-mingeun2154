@@ -3,13 +3,13 @@ package christmas.domain.event.discount.perItem;
 import static christmas.domain.order.ItemCategory.*;
 import static java.time.DayOfWeek.*;
 
-import christmas.domain.event.discount.perOrder.DiscountPerOrder;
+import christmas.domain.event.Benefit;
 import christmas.domain.order.ItemCategory;
 import christmas.domain.order.VisitDate;
 import java.time.DayOfWeek;
 import java.util.List;
 
-public enum ChristmasPromotion implements DiscountPerOrder {
+public enum ChristmasPromotion implements Benefit {
 
     WEEKDAY_DISCOUNT("평일 할인", 2_023, DESSERT, List.of(SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY)),
     WEEKEND_DISCOUNT("주말 할인", 2_023, MAIN, List.of(FRIDAY, SATURDAY));
@@ -27,7 +27,7 @@ public enum ChristmasPromotion implements DiscountPerOrder {
     }
 
     @Override
-    public String getEventName() {
+    public String benefitName() {
         return this.name;
     }
 

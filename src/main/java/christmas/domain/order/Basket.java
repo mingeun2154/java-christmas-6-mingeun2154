@@ -9,22 +9,21 @@ import christmas.exceptions.DrinksOnlyOrderedException;
 import christmas.exceptions.InvalidOrderInputPattern;
 import christmas.exceptions.InvalidQuantityException;
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Basket {
 
     private static final Integer MAX_TOTAL_QUANTITY = 20;
-    private final List<ItemOrder> orderedItems;
-
-    public static Basket createEmptyBasket() {
-        return new Basket();
-    }
+    private final EnumMap<MenuItem, Integer> orders;
 
     public static Basket of(MultipleOrderInput input)
             throws InvalidOrderInputPattern, InvalidQuantityException, DrinksOnlyOrderedException {
         Basket result = new Basket();
         for (ItemOrderInput orderInput : input.getOrders()) {
-            result.orderedItems.add(ItemOrder.of(orderInput));
+            ItemOrder itemOrder = ItemOrder.of(orderInput);
+            result.orders.put(itemOrder.getItem(), itemOrder.getQuantity());
         }
         validateTotalQuantity(result);
         validateDrinksOnlyOrder(result);
@@ -32,36 +31,44 @@ public class Basket {
     }
 
     public int totalPriceBeforeDiscount() {
-        return orderedItems.stream().mapToInt(ItemOrder::totalPriceBeforeDiscount).sum();
-    }
-
-    public void addItem(MenuItem item, int quantity) {
-        orderedItems.add(ItemOrder.of(item, quantity));
-    }
-
-    public int countItemsDiscountByEvent(ChristmasPromotion policy) {
-        return orderedItems.stream()
-                .filter((order) -> policy.matchCategory(order.getCategory()))
-                .mapToInt((order) -> order.getQuantity())
+        return orders.entrySet().stream()
+                .mapToInt(order -> order.getKey().getPrice() * order.getValue())
                 .sum();
     }
 
+    public void addItem(MenuItem item, int quantity) {
+        orders.put(item, quantity);
+    }
+
+    public int countItemsDiscountByEvent(ChristmasPromotion policy) {
+        return orders.entrySet().stream()
+                .filter((order) -> policy.matchCategory(order.getKey().getCategory()))
+                .mapToInt((order) -> order.getValue())
+                .sum();
+    }
+
+    public int count(ItemCategory category) {
+        return (int) orders.entrySet().stream()
+                .filter(order -> order.getKey().getCategory() == category)
+                .count();
+    }
+
     public String itemsView() {
-        if (orderedItems.size() == 0) {
+        if (orders.size() == 0) {
             return "없음";
         }
         StringBuilder sb = new StringBuilder();
-        orderedItems.forEach(item -> {
-            sb.append(item.getItemName())
+        orders.entrySet().forEach(order -> {
+            sb.append(order.getKey().getName())
                     .append(" ")
-                    .append(item.getQuantity())
+                    .append(order.getValue())
                     .append("개\n");
         });
         return sb.toString();
     }
 
-    private Basket() {
-        orderedItems = new ArrayList<>();
+    public Basket() {
+        orders = new EnumMap<>(MenuItem.class);
     }
 
     private static void validateTotalQuantity(Basket orders) throws InvalidQuantityException {
@@ -70,20 +77,16 @@ public class Basket {
         }
     }
 
-    private static void validateDrinksOnlyOrder(Basket orders) throws DrinksOnlyOrderedException {
-        for (ItemOrder item : orders.orderedItems) {
-            if (item.getCategory() != DRINK) {
-                return;
-            }
+    private static void validateDrinksOnlyOrder(Basket basket) throws DrinksOnlyOrderedException {
+        if (basket.orders.size() == basket.count(DRINK)) {
+            throw new DrinksOnlyOrderedException();
         }
-        throw new DrinksOnlyOrderedException();
     }
 
-    private static int countTotalItemsQuantity(Basket orders) {
-        int totalQuantity = 0;
-        for (ItemOrder item : orders.orderedItems) {
-            totalQuantity += item.getQuantity();
-        }
-        return totalQuantity;
+    private static int countTotalItemsQuantity(Basket basket) {
+        return basket.orders.entrySet()
+                .stream()
+                .mapToInt(order -> order.getValue())
+                .sum();
     }
 }

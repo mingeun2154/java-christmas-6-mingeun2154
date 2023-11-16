@@ -3,7 +3,7 @@ package christmas.domain.event.discount.perOrder;
 import christmas.domain.order.VisitDate;
 import java.util.List;
 
-public class SpecialDiscount extends Discount implements DiscountPerOrder {
+public class SpecialDiscount extends Discount {
 
     private static final String EVENT_NAME = "크리스마스 디데이 할인";
     private static final Integer BENEFIT_AMOUNT = 1_000;

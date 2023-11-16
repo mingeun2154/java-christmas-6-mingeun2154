@@ -3,6 +3,8 @@ package christmas.domain.order;
 import christmas.IO.ItemOrderInput;
 import christmas.exceptions.InvalidQuantityException;
 import christmas.exceptions.NoSuchItemExistsException;
+import java.awt.Menu;
+import java.util.EnumMap;
 
 public class ItemOrder {
 
@@ -42,6 +44,10 @@ public class ItemOrder {
 
     public String getItemName() {
         return item.getName();
+    }
+
+    public MenuItem getItem() {
+        return item;
     }
 
     private static void validateQuantityLowerBound(ItemOrderInput input) throws InvalidQuantityException {

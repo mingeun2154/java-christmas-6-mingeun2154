@@ -9,7 +9,7 @@ public class Gift {
     private static final Integer CHAMPAGNE_THRESHOLD = 120_000;
 
     public static Basket of(int totalPriceBeforeDiscount) {
-        Basket gifts = Basket.createEmptyBasket();
+        Basket gifts = new Basket();
         if (totalPriceBeforeDiscount >= CHAMPAGNE_THRESHOLD) {
             gifts.addItem(CHAMPAGNE, 1);
         }

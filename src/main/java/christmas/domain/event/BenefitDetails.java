@@ -15,7 +15,7 @@ import java.util.Map.Entry;
 public class BenefitDetails {
 
     private final EnumMap<ChristmasPromotion, Integer> perItemDiscounts;
-    private final List<DiscountPerOrder> perOrderDiscounts;
+    private final List<Discount> perOrderDiscounts;
     private final Basket gifts;
 
     public static BenefitDetails of(Basket orders, VisitDate visitDate) {
@@ -52,7 +52,7 @@ public class BenefitDetails {
         sb.append(String.format("크리스마스 디데이 할인: -%,d원\n", discountAmountBy(ChristmasDDayDiscount.class)));
         for (Entry<ChristmasPromotion, Integer> detail : perItemDiscounts.entrySet()) {
             sb.append(String.format("%s: -%,d원\n",
-                    detail.getKey().getEventName(),
+                    detail.getKey().benefitName(),
                     detail.getKey().benefitAmount() * detail.getValue()));
         }
         sb.append(String.format("증정 이벤트: -%,d원\n", gifts.totalPriceBeforeDiscount()));
