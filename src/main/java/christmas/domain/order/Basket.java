@@ -49,7 +49,7 @@ public class Basket {
 
     public int count(ItemCategory category) {
         return (int) orders.entrySet().stream()
-                .filter(order -> order.getKey().getCategory() == category)
+                .filter(order -> order.getKey().matchCategory(category))
                 .count();
     }
 

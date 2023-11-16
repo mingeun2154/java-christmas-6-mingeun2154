@@ -56,6 +56,10 @@ public enum MenuItem {
         return itemCategory;
     }
 
+    public boolean matchCategory(ItemCategory category) {
+        return itemCategory == category;
+    }
+
     public int getPrice() {
         return price;
     }

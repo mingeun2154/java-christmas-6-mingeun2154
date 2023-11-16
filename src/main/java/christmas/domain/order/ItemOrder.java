@@ -38,14 +38,6 @@ public class ItemOrder {
         return quantity * item.getPrice();
     }
 
-    public ItemCategory getCategory() {
-        return item.getCategory();
-    }
-
-    public String getItemName() {
-        return item.getName();
-    }
-
     public MenuItem getItem() {
         return item;
     }
