@@ -1,43 +1,22 @@
 package christmas.domain.event;
 
-import christmas.domain.event.discount.perItem.ChristmasPromotion;
-import christmas.domain.event.discount.perOrder.ChristmasDDayDiscount;
-import christmas.domain.event.discount.perOrder.Discount;
-import christmas.domain.event.discount.perOrder.DiscountPerOrder;
-import christmas.domain.event.discount.perOrder.SpecialDiscount;
 import christmas.domain.order.Basket;
-import christmas.domain.order.VisitDate;
-import java.util.ArrayList;
+import christmas.domain.order.Order;
 import java.util.EnumMap;
 import java.util.List;
-import java.util.Map.Entry;
 
 public class BenefitDetails {
 
-    private final EnumMap<ChristmasPromotion, Integer> perItemDiscounts;
-    private final List<Discount> perOrderDiscounts;
+    private static final List<DiscountEvent> ONGOING_DISCOUNT_EVENTS = List.of(DiscountEvent.values());
+    private final EnumMap<DiscountEvent, Integer> appliedDiscountEvents;
     private final Basket gifts;
 
-    public static BenefitDetails of(Basket orders, VisitDate visitDate) {
-        return new BenefitDetails(orders, visitDate);
+    public static BenefitDetails of(Order order) {
+        return new BenefitDetails(order);
     }
 
     public int totalBenefitAmount() {
-        return totalBenefitAmountByDiscountPerItem()
-                + totalBenefitAmountByDiscountPerOrder()
-                + totalBenefitAmountByGifts();
-    }
-
-    public int discountAmountBy(ChristmasPromotion discountEvent) {
-        return discountEvent.benefitAmount() * perItemDiscounts.get(discountEvent);
-    }
-
-    public int discountAmountBy(Class<? extends Discount> discountType) {
-        return perOrderDiscounts.stream().filter(
-                discount -> discount.getClass().equals(discountType))
-                .findAny()
-                .get()
-                .benefitAmount();
+        return benefitAmountByDiscountEvents() + benefitAmountByGifts();
     }
 
     public int giftAmount() {
@@ -49,45 +28,36 @@ public class BenefitDetails {
             return "없음";
         }
         StringBuilder sb = new StringBuilder();
-        sb.append(String.format("크리스마스 디데이 할인: -%,d원\n", discountAmountBy(ChristmasDDayDiscount.class)));
-        for (Entry<ChristmasPromotion, Integer> detail : perItemDiscounts.entrySet()) {
-            sb.append(String.format("%s: -%,d원\n",
-                    detail.getKey().benefitName(),
-                    detail.getKey().benefitAmount() * detail.getValue()));
-        }
+        appliedDiscountEvents.entrySet().forEach((discount) -> {
+            if (discount.getValue() != 0) {
+                sb.append(String.format("%s %,d원\n", discount.getKey().benefitName(), discount.getValue()));
+            }
+        });
         sb.append(String.format("증정 이벤트: -%,d원\n", gifts.totalPriceBeforeDiscount()));
         return sb.toString();
     }
 
-    private BenefitDetails(Basket orders, VisitDate visitDate) {
-        perItemDiscounts = new EnumMap<>(ChristmasPromotion.class);
-        for (ChristmasPromotion policy : ChristmasPromotion.values()) {
-            if (policy.matchPeriod(visitDate)) {
-                this.perItemDiscounts.put(policy, orders.countItemsDiscountByEvent(policy));
-            }
-            if (!policy.matchPeriod(visitDate)) {
-                this.perItemDiscounts.put(policy, 0);
-            }
-        }
-        perOrderDiscounts = new ArrayList<>();
-        perOrderDiscounts.add(ChristmasDDayDiscount.of(visitDate));
-        perOrderDiscounts.add(SpecialDiscount.of(visitDate));
-        gifts = Gift.of(orders.totalPriceBeforeDiscount());
+
+
+    private BenefitDetails(Order order) {
+        appliedDiscountEvents = new EnumMap(DiscountEvent.class);
+        ONGOING_DISCOUNT_EVENTS.stream().forEach(event -> {
+            appliedDiscountEvents.put(event, -1 * event.benefitAmount(order));
+        });
+        gifts = Gift.of(order.totalPriceBeforeDiscount());
     }
 
-    private int totalBenefitAmountByDiscountPerOrder() {
-        return perOrderDiscounts.stream()
-                .mapToInt(discount -> discount.benefitAmount())
+    private int benefitAmountByGifts() {
+        return -1 * gifts.totalPriceBeforeDiscount();
+    }
+
+    private int benefitAmountByDiscountEvents() {
+        return appliedDiscountEvents.entrySet().stream()
+                .mapToInt(activeDiscountEvent -> activeDiscountEvent.getValue())
                 .sum();
     }
 
-    private int totalBenefitAmountByDiscountPerItem() {
-        return perItemDiscounts.entrySet().stream()
-                .mapToInt((discount) -> discount.getKey().benefitAmount() * discount.getValue())
-                .sum();
-    }
-
-    private int totalBenefitAmountByGifts() {
-        return gifts.totalPriceBeforeDiscount();
+    public int discountAmountBy(DiscountEvent discountEvent) {
+        return appliedDiscountEvents.get(discountEvent);
     }
 }

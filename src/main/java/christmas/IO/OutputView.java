@@ -26,8 +26,8 @@ public class OutputView {
         printBenefitDetails(preview.benefits().detailsView());
         printTotalBenefitAmount(preview.benefits().totalBenefitAmount());
         printTotalAmountAfterDiscount(preview.order().totalPriceBeforeDiscount()
-                - preview.benefits().totalBenefitAmount()
-                - gifts.totalPriceBeforeDiscount());
+                + preview.benefits().totalBenefitAmount()
+                + gifts.totalPriceBeforeDiscount());
         printBadge(Badge.of(preview.benefits().totalBenefitAmount()).getName());
     }
 

@@ -1,11 +1,10 @@
 package christmas.domain.event;
 
-import christmas.domain.order.Basket;
-import java.util.function.Predicate;
+import christmas.domain.order.Order;
 
 public interface Benefit {
 
     String benefitName();
 
-    int benefitAmount();
+    int benefitAmount(Order order);
 }

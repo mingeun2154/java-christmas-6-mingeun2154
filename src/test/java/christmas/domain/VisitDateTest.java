@@ -1,15 +1,20 @@
 package christmas.domain;
 
-import static christmas.domain.event.discount.perItem.ChristmasPromotion.WEEKDAY_DISCOUNT;
-import static christmas.domain.event.discount.perItem.ChristmasPromotion.WEEKEND_DISCOUNT;
+import static christmas.domain.event.DiscountEvent.WEEKDAY_DISCOUNT;
+import static christmas.domain.event.DiscountEvent.WEEKEND_DISCOUNT;
+import static java.time.DayOfWeek.FRIDAY;
+import static java.time.DayOfWeek.SATURDAY;
+import static java.time.DayOfWeek.SUNDAY;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 import christmas.IO.PureNumber;
-import christmas.domain.event.discount.perOrder.SpecialDiscount;
 import christmas.domain.order.VisitDate;
+import java.time.DayOfWeek;
+import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
@@ -33,35 +38,9 @@ public class VisitDateTest {
         );
     }
 
-    /**
-     * 년도는 VisitDate의 static 필드에서 설정
-     */
-
-    @DisplayName("입력된 날짜가 주말(금,토)인지 확인(2023년 기준)")
-    @ParameterizedTest
-    @CsvSource({"1,4", "2,12", "8,20", "9,28", "15,25", "16,3", "22,10", "23,31", "29,19", "30,18"})
-    void isTodayAWeekend(String weekend, String weekday) {
-        assertThat(WEEKEND_DISCOUNT.matchPeriod(VisitDate.of(PureNumber.of(weekend)))).isTrue();
-        assertThat(WEEKEND_DISCOUNT.matchPeriod(VisitDate.of(PureNumber.of(weekday)))).isFalse();
-    }
-
-    @DisplayName("입력된 날짜가 평일(일~목)인지 확인(2023년 기준)")
-    @ParameterizedTest
-    @CsvSource({"1,4", "2,12", "8,20", "9,28", "15,25", "16,3", "22,10", "23,31", "29,19", "30,18"})
-    void isTodayAWeekDay(String weekend, String weekday) {
-        assertThat(WEEKDAY_DISCOUNT.matchPeriod(VisitDate.of(PureNumber.of(weekend)))).isFalse();
-        assertThat(WEEKDAY_DISCOUNT.matchPeriod(VisitDate.of(PureNumber.of(weekday)))).isTrue();
-    }
-
-    /**
-     * 별이 표시된 날짜들은 VisitDate의 static 필드에서 설정
-     */
-
-    @DisplayName("별이 표시된 날짜인지 아닌지 판정")
-    @ParameterizedTest
-    @CsvSource({"3,1", "10,13", "17,18", "24,26", "25,29", "31,30"})
-    void isTodayStarMarkedDay(String star, String non) {
-        assertThat(SpecialDiscount.inEventPeriod(VisitDate.of(PureNumber.of(star)))).isTrue();
-        assertThat(SpecialDiscount.inEventPeriod(VisitDate.of(PureNumber.of(non)))).isFalse();
+    @Test
+    void weekend() {
+        assertThat(VisitDate.of(PureNumber.of("1")).matchDaysOfWeek(List.of(FRIDAY, SATURDAY))).isTrue();
+        assertThat(VisitDate.of(PureNumber.of("3")).matchDaysOfWeek(List.of(FRIDAY, SATURDAY))).isFalse();
     }
 }

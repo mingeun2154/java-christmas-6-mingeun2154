@@ -4,14 +4,10 @@ import static christmas.domain.order.ItemCategory.DRINK;
 
 import christmas.IO.ItemOrderInput;
 import christmas.IO.MultipleOrderInput;
-import christmas.domain.event.discount.perItem.ChristmasPromotion;
 import christmas.exceptions.DrinksOnlyOrderedException;
 import christmas.exceptions.InvalidOrderInputPattern;
 import christmas.exceptions.InvalidQuantityException;
-import java.util.ArrayList;
 import java.util.EnumMap;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class Basket {
 
@@ -40,17 +36,11 @@ public class Basket {
         orders.put(item, quantity);
     }
 
-    public int countItemsDiscountByEvent(ChristmasPromotion policy) {
-        return orders.entrySet().stream()
-                .filter((order) -> policy.matchCategory(order.getKey().getCategory()))
-                .mapToInt((order) -> order.getValue())
-                .sum();
-    }
-
     public int count(ItemCategory category) {
         return (int) orders.entrySet().stream()
                 .filter(order -> order.getKey().matchCategory(category))
-                .count();
+                .mapToInt(order -> order.getValue())
+                .sum();
     }
 
     public String itemsView() {
@@ -78,7 +68,7 @@ public class Basket {
     }
 
     private static void validateDrinksOnlyOrder(Basket basket) throws DrinksOnlyOrderedException {
-        if (basket.orders.size() == basket.count(DRINK)) {
+        if (countTotalItemsQuantity(basket) == basket.count(DRINK)) {
             throw new DrinksOnlyOrderedException();
         }
     }

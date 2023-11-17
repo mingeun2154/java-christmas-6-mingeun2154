@@ -1,15 +1,16 @@
 package christmas.domain;
 
-import static christmas.domain.event.discount.perItem.ChristmasPromotion.WEEKDAY_DISCOUNT;
-import static christmas.domain.event.discount.perItem.ChristmasPromotion.WEEKEND_DISCOUNT;
+import static christmas.domain.event.DiscountEvent.CHRISTMAS_D_DAY_DISCOUNT;
+import static christmas.domain.event.DiscountEvent.SPECIAL_DISCOUNT;
+import static christmas.domain.event.DiscountEvent.WEEKDAY_DISCOUNT;
+import static christmas.domain.event.DiscountEvent.WEEKEND_DISCOUNT;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import christmas.IO.MultipleOrderInput;
 import christmas.IO.PureNumber;
 import christmas.domain.event.BenefitDetails;
-import christmas.domain.event.discount.perOrder.ChristmasDDayDiscount;
-import christmas.domain.event.discount.perOrder.SpecialDiscount;
 import christmas.domain.order.Basket;
+import christmas.domain.order.Order;
 import christmas.domain.order.VisitDate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,12 +23,12 @@ public class BenefitDetailsTest {
     @DisplayName("혜택 내용 기록")
     @Test
     void benefitDetailsTest() {
-        BenefitDetails details = BenefitDetails.of(orders, visitDate);
-        assertThat(details.discountAmountBy(ChristmasDDayDiscount.class)).isEqualTo(1_200);
-        assertThat(details.discountAmountBy(WEEKDAY_DISCOUNT)).isEqualTo(4_046);
+        BenefitDetails details = BenefitDetails.of(Order.of(orders, visitDate));
+        assertThat(details.discountAmountBy(CHRISTMAS_D_DAY_DISCOUNT)).isEqualTo(-1_200);
+        assertThat(details.discountAmountBy(WEEKDAY_DISCOUNT)).isEqualTo(-4_046);
         assertThat(details.discountAmountBy(WEEKEND_DISCOUNT)).isEqualTo(0);
-        assertThat(details.discountAmountBy(SpecialDiscount.class)).isEqualTo(1_000);
+        assertThat(details.discountAmountBy(SPECIAL_DISCOUNT)).isEqualTo(-1_000);
         assertThat(details.giftAmount()).isEqualTo(25_000);
-        assertThat(details.totalBenefitAmount()).isEqualTo(31_246);
+        assertThat(details.totalBenefitAmount()).isEqualTo(-31_246);
     }
 }
